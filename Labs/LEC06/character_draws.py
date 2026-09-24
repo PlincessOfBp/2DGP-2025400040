@@ -52,6 +52,8 @@ def MoveRectangle():
             rectangle = False
 
         if way == 0:
+            if y >= 350:
+                way += 1
             y += 10
             pass
         elif way == 1:
