@@ -85,6 +85,19 @@ def MoveRectangle():
 
 def MoveTriangle():
     print("삼각운동")
+
+    triangle = True
+    way = 0
+    character.draw(400, 300)
+    x = 450
+    y = 300
+
+    while triangle:
+        clear_canvas()
+        character.draw(x, y)
+        update_canvas()
+        delay(0.1)
+
     pass
 
 while True:
