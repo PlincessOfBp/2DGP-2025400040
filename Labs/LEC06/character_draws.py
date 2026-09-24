@@ -23,6 +23,7 @@ def MoveCircle():
         clear_canvas()
 
         if angle >= 360:
+            print("원운동 종료")
             circle = False
 
         character.draw(x, y)
