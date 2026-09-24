@@ -98,6 +98,15 @@ def MoveTriangle():
             print("삼각운동 종료")
             triangle = False
 
+        if way == 0:
+            pass
+        elif way == 1:
+            pass
+        elif way == 2:
+            pass
+        elif way == 3:
+            pass
+
         character.draw(x, y)
         update_canvas()
         delay(0.1)
