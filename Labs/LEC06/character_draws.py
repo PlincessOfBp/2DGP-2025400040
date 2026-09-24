@@ -39,6 +39,17 @@ def MoveCircle():
 
 def MoveRectangle():
     print("사각운동")
+    rectangle = True
+    character.draw(400, 300)
+    x = 500
+    y = 300
+
+    while rectangle:
+        clear_canvas()
+        character.draw(x, y)
+        update_canvas()
+        delay(0.1)
+
     pass
 
 def MoveTriangle():
