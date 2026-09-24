@@ -99,17 +99,25 @@ def MoveTriangle():
             triangle = False
 
         if way == 0:
+            if x <= 400:
+                way += 1
             y += 10
             x -= 10
             pass
         elif way == 1:
+            if x <= 350:
+                way += 1
             y -= 10
             x -= 10
             pass
         elif way == 2:
+            if x >= 450:
+                way += 1
             x += 10
             pass
         elif way == 3:
+            if y >= 300:
+                way += 1
             y += 10
             x -= 10
             pass
