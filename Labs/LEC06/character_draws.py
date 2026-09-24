@@ -99,12 +99,19 @@ def MoveTriangle():
             triangle = False
 
         if way == 0:
+            y += 10
+            x -= 10
             pass
         elif way == 1:
+            y -= 10
+            x -= 10
             pass
         elif way == 2:
+            x += 10
             pass
         elif way == 3:
+            y += 10
+            x -= 10
             pass
 
         character.draw(x, y)
