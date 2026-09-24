@@ -30,6 +30,7 @@ def MoveCircle():
         update_canvas()
 
         angle += 0.5
+        print(angle)
         x = centerX + radius * math.cos(angle)
         y = centerY + radius * math.sin(angle)
 
