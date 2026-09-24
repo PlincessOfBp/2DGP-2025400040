@@ -12,7 +12,7 @@ def MoveCircle():
     print("원운동")
     circle = True
     character.draw(400, 300)
-    x = 500
+    x = 450
     y = 300
     centerX = 400
     centerY = 300
