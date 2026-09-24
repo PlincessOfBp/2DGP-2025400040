@@ -57,6 +57,7 @@ def MoveRectangle():
             y += 10
             pass
         elif way == 1:
+            x -= 10
             pass
         elif way == 2:
             pass
