@@ -15,10 +15,14 @@ def MoveCircle():
     character.draw(400, 300)
     x = 400
     y = 300
+    angle = 0
 
     while circle:
         character.draw(x, y)
         update_canvas()
+
+        if angle == 360:
+            circle = False
 
         delay(0.1)
     pass
