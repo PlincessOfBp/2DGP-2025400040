@@ -8,7 +8,10 @@ character = load_image('character.png')
 
 def MoveCircle():
     print("원운동")
-    
+    clear_canvas()
+    character.draw(400, 300)
+    update_canvas()
+    delay(0.1)
     pass
 
 def MoveRectangle():
