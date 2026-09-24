@@ -22,7 +22,7 @@ def MoveCircle():
     while circle:
         clear_canvas()
 
-        if angle == 360:
+        if angle >= 360:
             circle = False
 
         character.draw(x, y)
