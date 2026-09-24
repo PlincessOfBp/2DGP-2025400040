@@ -12,8 +12,8 @@ def MoveCircle():
     print("원운동")
     circle = True
     character.draw(400, 300)
-    x = 400
-    y = 350
+    x = 450
+    y = 300
     centerX = 400
     centerY = 300
     radius = 50
@@ -22,7 +22,7 @@ def MoveCircle():
     while circle:
         clear_canvas()
 
-        if angle >= 360:
+        if angle >= 6.28:
             print("원운동 종료")
             circle = False
 
@@ -30,7 +30,7 @@ def MoveCircle():
         update_canvas()
 
         angle += 0.5
-        print(angle)
+        print(angle, flush=True)
         x = centerX + radius * math.cos(angle)
         y = centerY + radius * math.sin(angle)
 
