@@ -72,6 +72,7 @@ def MoveRectangle():
             x += 10
             pass
         elif way == 4:
+            y += 10 
             pass
 
         character.draw(x, y)
