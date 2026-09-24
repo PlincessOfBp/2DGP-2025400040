@@ -42,7 +42,7 @@ def MoveRectangle():
     rectangle = True
     way = 0
     character.draw(400, 300)
-    x = 500
+    x = 450
     y = 300
 
     while rectangle:
@@ -52,6 +52,7 @@ def MoveRectangle():
             rectangle = False
 
         if way == 0:
+            y += 10
             pass
         elif way == 1:
             pass
