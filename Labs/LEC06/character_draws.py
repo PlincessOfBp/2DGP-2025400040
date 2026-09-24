@@ -28,7 +28,7 @@ def MoveCircle():
         character.draw(x, y)
         update_canvas()
 
-        angle += 0.01
+        angle += 0.5
         x = centerX + radius * math.cos(angle)
         y = centerY + radius * math.sin(angle)
 
