@@ -94,6 +94,10 @@ def MoveTriangle():
 
     while triangle:
         clear_canvas()
+        if way >= 4:
+            print("삼각운동 종료")
+            triangle = False
+
         character.draw(x, y)
         update_canvas()
         delay(0.1)
