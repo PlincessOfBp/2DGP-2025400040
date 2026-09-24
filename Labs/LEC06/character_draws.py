@@ -40,12 +40,19 @@ def MoveCircle():
 def MoveRectangle():
     print("사각운동")
     rectangle = True
+    way = 0
     character.draw(400, 300)
     x = 500
     y = 300
 
     while rectangle:
         clear_canvas()
+        if way >= 5:
+            print("사각운동 종료")
+            rectangle = False
+
+        
+
         character.draw(x, y)
         update_canvas()
         delay(0.1)
