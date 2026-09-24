@@ -51,7 +51,16 @@ def MoveRectangle():
             print("사각운동 종료")
             rectangle = False
 
-        
+        if way == 0:
+            pass
+        elif way == 1:
+            pass
+        elif way == 2:
+            pass
+        elif way == 3:
+            pass
+        elif way == 4:
+            pass
 
         character.draw(x, y)
         update_canvas()
