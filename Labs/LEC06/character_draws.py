@@ -63,6 +63,9 @@ def move_up():
 def move_down():
     pass 
 
+def move_strait():
+    pass 
+
 def MoveTriangle():
     print("삼각운동")
     move_up()
