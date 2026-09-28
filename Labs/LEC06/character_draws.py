@@ -10,29 +10,16 @@ character = load_image('character.png')
 
 def MoveCircle():
     print("원운동")
-    circle = True
-    character.draw(400, 300)
-    x = 400
-    y = 350
-    centerX = 400
-    centerY = 300
-    radius = 50
-    angle = 0
 
-    while circle:
+    for degree in range(0, 360, 5):
+        theta = math.radians(degree)
+        x = 400 + 200 * math.cos(theta)
+        y = 300 + 200 * math.sin(theta)
         clear_canvas()
-
-        if angle >= 360:
-            circle = False
-
         character.draw(x, y)
         update_canvas()
-
-        angle += 0.5
-        x = centerX + radius * math.cos(angle)
-        y = centerY + radius * math.sin(angle)
-
-        delay(0.1)
+        delay(0.05)
+    
     pass
 
 def MoveRectangle():
