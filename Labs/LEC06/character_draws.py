@@ -67,6 +67,10 @@ def move_up():
 
 def move_down():
     print("DOWN")
+    y = 400
+    for x in range(400, 750, 10):
+        y -= 10
+        draw_character(x, y)
     pass 
 
 def move_strait():
