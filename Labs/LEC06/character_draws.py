@@ -60,6 +60,9 @@ def MoveRectangle():
 def move_up():
     pass 
 
+def move_down():
+    pass 
+
 def MoveTriangle():
     print("삼각운동")
     move_up()
