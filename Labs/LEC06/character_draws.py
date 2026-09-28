@@ -59,6 +59,9 @@ def MoveRectangle():
 
 def MoveTriangle():
     print("삼각운동")
+    move_up()
+    move_down()
+    move_strait()
     pass
 
 while True:
