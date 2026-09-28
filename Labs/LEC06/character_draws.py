@@ -58,6 +58,7 @@ def MoveRectangle():
     pass
 
 def move_up():
+    print("UP")
     pass 
 
 def move_down():
