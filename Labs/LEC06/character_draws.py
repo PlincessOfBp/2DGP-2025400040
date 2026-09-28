@@ -57,6 +57,9 @@ def MoveRectangle():
     move_left()
     pass
 
+def move_up():
+    pass 
+
 def MoveTriangle():
     print("삼각운동")
     move_up()
