@@ -24,6 +24,10 @@ def MoveCircle():
 
 def MoveRectangle():
     print("사각운동")
+    move_top()
+    move_right()
+    move_bottom()
+    move_left()
     pass
 
 def MoveTriangle():
