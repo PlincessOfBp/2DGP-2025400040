@@ -8,6 +8,12 @@ open_canvas(800, 600)
 
 character = load_image('character.png')
 
+def draw_character(x, y):
+    clear_canvas()
+    character.draw(x, y)
+    update_canvas()
+    delay(0.05)
+
 def MoveCircle():
     print("원운동")
 
@@ -21,19 +27,15 @@ def MoveCircle():
 
 def move_top():
     print('TOP')
-    for x in range(50, 750, 5):
+    for x in range(50, 750, 10):
         draw_character(x, 550)
         
     pass
 
-def draw_character(x, y):
-    clear_canvas()
-    character.draw(x, y)
-    update_canvas()
-    delay(0.05)
-
 def move_right():
     print('RIGHT')
+    for y in range(550, 50, -10):
+        draw_character(750, y)
     pass
 
 def move_bottom():
