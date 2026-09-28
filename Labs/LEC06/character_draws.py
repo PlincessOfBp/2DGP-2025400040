@@ -66,6 +66,7 @@ def move_down():
     pass 
 
 def move_strait():
+    print("STRAIT")
     pass 
 
 def MoveTriangle():
