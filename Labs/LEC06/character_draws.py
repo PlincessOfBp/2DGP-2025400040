@@ -24,6 +24,11 @@ def MoveCircle():
 
 def move_top():
     print('TOP')
+    for x in range(50, 750, 5):
+        clear_canvas()
+        character.draw(x, 550)
+        update_canvas()
+        delay(0.05)
     pass
 
 def move_right():
