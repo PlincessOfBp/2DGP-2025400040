@@ -75,6 +75,8 @@ def move_down():
 
 def move_strait():
     print("STRAIT")
+    for x in range(750, 50, -10):
+        draw_character(x, 50)
     pass 
 
 def MoveTriangle():
