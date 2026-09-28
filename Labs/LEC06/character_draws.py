@@ -59,6 +59,10 @@ def MoveRectangle():
 
 def move_up():
     print("UP")
+    y = 50
+    for x in range(50, 400, 10):
+        y += 10
+        draw_character(x, y)
     pass 
 
 def move_down():
