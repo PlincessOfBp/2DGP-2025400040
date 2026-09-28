@@ -23,15 +23,19 @@ def MoveCircle():
     pass
 
 def move_top():
+    print('TOP')
     pass
 
 def move_right():
+    print('RIGHT')
     pass
 
 def move_bottom():
+    print('BOTTOM')
     pass
 
 def move_left():
+    print('LEFT')
     pass
 
 def MoveRectangle():
