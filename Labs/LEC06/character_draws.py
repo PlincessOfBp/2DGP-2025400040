@@ -62,6 +62,7 @@ def move_up():
     pass 
 
 def move_down():
+    print("DOWN")
     pass 
 
 def move_strait():
