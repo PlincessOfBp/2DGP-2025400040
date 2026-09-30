@@ -33,7 +33,18 @@ def find_sheet(filename):
     )
 
 def build_frames(image, layout, count):
-    pass
+    frames = []
+
+    for i in range(count):
+        if layout == 'h':
+            col, row = i, 0
+
+        x = col * CELL
+        y = image.h - (row + 1) * CELL
+
+        frames.append((x, y, CELL, CELL))
+
+    return frames
 
 def load_animations():
     pass
