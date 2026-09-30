@@ -84,4 +84,27 @@ def draw_frame(image, frame):
     )
 
 def main():
-    pass
+    open_canvas(CANVAS_W, CANVAS_H)
+
+    animations, order = load_animations()
+
+    running = True
+
+    while running:
+        for e in get_events():
+            if e.type == SDL_QUIT:
+                running = False
+
+        clear_canvas()
+
+        image, frames = animations[order[0]]
+        draw_frame(image, frames[0])
+
+        update_canvas()
+        delay(0.01)
+
+    close_canvas()
+
+
+if __name__ == '__main__':
+    main()
