@@ -38,6 +38,8 @@ def build_frames(image, layout, count):
     for i in range(count):
         if layout == 'h':
             col, row = i, 0
+        elif layout == 'v':
+            col, row = 0, i
 
         x = col * CELL
         y = image.h - (row + 1) * CELL
