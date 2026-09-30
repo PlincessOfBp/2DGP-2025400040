@@ -2,12 +2,11 @@ from pico2d import *
 import os
 
 CANVAS_W, CANVAS_H = 800, 800
-
-CELL = 128
-SCALE = 4
-FRAME_DELAY = 0.08
-REPEAT_COUNT = 5
-PAUSE_TIME = 1.0
+CELL = 128              
+SCALE = 4               
+FRAME_DELAY = 0.08      
+REPEAT_COUNT = 5        
+PAUSE_TIME = 1.0        
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHARACTER_DIR = os.path.join(BASE_DIR, 'character')
@@ -27,15 +26,11 @@ def find_sheet(filename):
     for root, _, files in os.walk(CHARACTER_DIR):
         if filename in files:
             return os.path.join(root, filename)
-
-    raise FileNotFoundError(
-        f'{filename} 을(를) {CHARACTER_DIR} 에서 찾을 수 없습니다.'
-    )
+    raise FileNotFoundError(f'{filename} 을(를) {CHARACTER_DIR} 에서 찾을 수 없습니다.')
 
 
 def build_frames(image, layout, count):
     frames = []
-
     for i in range(count):
         if layout == 'h':
             col, row = i, 0
@@ -44,65 +39,45 @@ def build_frames(image, layout, count):
         else:
             cols = layout[1]
             col, row = i % cols, i // cols
-
         x = col * CELL
         y = image.h - (row + 1) * CELL
-
         frames.append((x, y, CELL, CELL))
-
     return frames
 
 
 def load_animations():
     animations = {}
     order = []
-
     for name, filename, layout, count in SHEETS:
         image = load_image(find_sheet(filename))
-        frames = build_frames(image, layout, count)
-
-        animations[name] = (image, frames)
+        animations[name] = (image, build_frames(image, layout, count))
         order.append(name)
-
     return animations, order
 
 
 def draw_frame(image, frame):
     x, y, w, h = frame
-
-    dw = w * SCALE
-    dh = h * SCALE
-
+    dw, dh = w * SCALE, h * SCALE
     cx = CANVAS_W // 2
     bottom = CANVAS_H // 2 - (CELL * SCALE) // 2
-
-    image.clip_draw(
-        x, y, w, h,
-        cx,
-        bottom + dh // 2,
-        dw,
-        dh
-    )
+    image.clip_draw(x, y, w, h, cx, bottom + dh // 2, dw, dh)
 
 
 def main():
     open_canvas(CANVAS_W, CANVAS_H)
-
     animations, order = load_animations()
 
     anim_index = 0
     frame_index = 0
     loop_count = 0
     pausing = False
-
     last_time = get_time()
     timer = 0.0
 
     running = True
-
     while running:
         for e in get_events():
-            if e.type == SDL_QUIT:
+            if e.type == SDL_QUIT or (e.type == SDL_KEYDOWN and e.key == SDLK_ESCAPE):
                 running = False
 
         now = get_time()
@@ -116,26 +91,19 @@ def main():
             if timer >= PAUSE_TIME:
                 timer = 0.0
                 pausing = False
-
-                # 다음 애니메이션으로 이동
                 anim_index = (anim_index + 1) % len(order)
-
-                # 다음 애니메이션은 첫 프레임부터 시작
                 frame_index = 0
-
-                # 반복 횟수 초기화
                 loop_count = 0
-
+                name = order[anim_index]
+                image, frames = animations[name]
         else:
-            if timer >= FRAME_DELAY:
+            while timer >= FRAME_DELAY and not pausing:
                 timer -= FRAME_DELAY
                 frame_index += 1
-
                 if frame_index >= len(frames):
                     loop_count += 1
-
                     if loop_count >= REPEAT_COUNT:
-                        frame_index = len(frames) - 1
+                        frame_index = len(frames) - 1   # 마지막 프레임에서 정지
                         pausing = True
                         timer = 0.0
                     else:
@@ -144,7 +112,6 @@ def main():
         clear_canvas()
         draw_frame(image, frames[frame_index])
         update_canvas()
-
         delay(0.01)
 
     close_canvas()
