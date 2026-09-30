@@ -21,3 +21,18 @@ SHEETS = [
     ('fall',        'fall.png',        ('grid', 3),  9),
     ('land',        'land.png',        'h',          8),
 ]
+
+def find_sheet(filename):
+    pass
+
+def build_frames(image, layout, count):
+    pass
+
+def load_animations():
+    pass
+
+def draw_frame(image, frame):
+    pass
+
+def main():
+    pass
