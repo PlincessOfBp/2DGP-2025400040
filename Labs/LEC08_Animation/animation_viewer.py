@@ -117,6 +117,15 @@ def main():
                 timer = 0.0
                 pausing = False
 
+                # 다음 애니메이션으로 이동
+                anim_index = (anim_index + 1) % len(order)
+
+                # 다음 애니메이션은 첫 프레임부터 시작
+                frame_index = 0
+
+                # 반복 횟수 초기화
+                loop_count = 0
+
         else:
             if timer >= FRAME_DELAY:
                 timer -= FRAME_DELAY
