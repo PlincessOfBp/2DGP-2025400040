@@ -88,6 +88,12 @@ def main():
 
     animations, order = load_animations()
 
+    anim_index = 0
+    frame_index = 0
+
+    last_time = get_time()
+    timer = 0.0
+
     running = True
 
     while running:
@@ -95,10 +101,23 @@ def main():
             if e.type == SDL_QUIT:
                 running = False
 
+        now = get_time()
+        timer += now - last_time
+        last_time = now
+
+        if timer >= FRAME_DELAY:
+            timer -= FRAME_DELAY
+            frame_index += 1
+
+            image, frames = animations[order[anim_index]]
+
+            if frame_index >= len(frames):
+                frame_index = 0
+
         clear_canvas()
 
-        image, frames = animations[order[0]]
-        draw_frame(image, frames[0])
+        image, frames = animations[order[anim_index]]
+        draw_frame(image, frames[frame_index])
 
         update_canvas()
         delay(0.01)
