@@ -93,6 +93,7 @@ def main():
     anim_index = 0
     frame_index = 0
     loop_count = 0
+    pausing = False
 
     last_time = get_time()
     timer = 0.0
@@ -111,17 +112,25 @@ def main():
         name = order[anim_index]
         image, frames = animations[name]
 
-        if timer >= FRAME_DELAY:
-            timer -= FRAME_DELAY
-            frame_index += 1
+        if pausing:
+            if timer >= PAUSE_TIME:
+                timer = 0.0
+                pausing = False
 
-            if frame_index >= len(frames):
-                loop_count += 1
+        else:
+            if timer >= FRAME_DELAY:
+                timer -= FRAME_DELAY
+                frame_index += 1
 
-                if loop_count >= REPEAT_COUNT:
-                    frame_index = len(frames) - 1
-                else:
-                    frame_index = 0
+                if frame_index >= len(frames):
+                    loop_count += 1
+
+                    if loop_count >= REPEAT_COUNT:
+                        frame_index = len(frames) - 1
+                        pausing = True
+                        timer = 0.0
+                    else:
+                        frame_index = 0
 
         clear_canvas()
         draw_frame(image, frames[frame_index])
