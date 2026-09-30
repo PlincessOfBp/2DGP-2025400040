@@ -23,7 +23,14 @@ SHEETS = [
 ]
 
 def find_sheet(filename):
-    pass
+    """character 폴더 아래에서 파일을 찾는다."""
+    for root, _, files in os.walk(CHARACTER_DIR):
+        if filename in files:
+            return os.path.join(root, filename)
+
+    raise FileNotFoundError(
+        f'{filename} 을(를) {CHARACTER_DIR} 에서 찾을 수 없습니다.'
+    )
 
 def build_frames(image, layout, count):
     pass
