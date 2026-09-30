@@ -2,3 +2,9 @@ from pico2d import *
 import os
 
 CANVAS_W, CANVAS_H = 800, 800
+
+CELL = 128
+SCALE = 4
+FRAME_DELAY = 0.08
+REPEAT_COUNT = 5
+PAUSE_TIME = 1.0
