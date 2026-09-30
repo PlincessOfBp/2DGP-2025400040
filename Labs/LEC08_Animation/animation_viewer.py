@@ -67,7 +67,19 @@ def load_animations():
     return animations, order
 
 def draw_frame(image, frame):
-    pass
+    x, y, w, h = frame
+
+    dw = w * SCALE
+    dh = h * SCALE
+
+    cx = CANVAS_W // 2
+    cy = CANVAS_H // 2
+
+    image.clip_draw(
+        x, y, w, h,
+        cx, cy,
+        dw, dh
+    )
 
 def main():
     pass
