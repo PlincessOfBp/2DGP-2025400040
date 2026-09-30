@@ -1,4 +1,4 @@
-from pico2d import * 
+from pico2d import *
 import os
 
 CANVAS_W, CANVAS_H = 800, 800
@@ -22,8 +22,8 @@ SHEETS = [
     ('land',        'land.png',        'h',          8),
 ]
 
+
 def find_sheet(filename):
-    """character 폴더 아래에서 파일을 찾는다."""
     for root, _, files in os.walk(CHARACTER_DIR):
         if filename in files:
             return os.path.join(root, filename)
@@ -32,16 +32,15 @@ def find_sheet(filename):
         f'{filename} 을(를) {CHARACTER_DIR} 에서 찾을 수 없습니다.'
     )
 
+
 def build_frames(image, layout, count):
     frames = []
 
     for i in range(count):
         if layout == 'h':
             col, row = i, 0
-
         elif layout == 'v':
             col, row = 0, i
-
         else:
             cols = layout[1]
             col, row = i % cols, i // cols
@@ -52,6 +51,7 @@ def build_frames(image, layout, count):
         frames.append((x, y, CELL, CELL))
 
     return frames
+
 
 def load_animations():
     animations = {}
@@ -65,6 +65,7 @@ def load_animations():
         order.append(name)
 
     return animations, order
+
 
 def draw_frame(image, frame):
     x, y, w, h = frame
@@ -83,6 +84,7 @@ def draw_frame(image, frame):
         dh
     )
 
+
 def main():
     open_canvas(CANVAS_W, CANVAS_H)
 
@@ -90,6 +92,7 @@ def main():
 
     anim_index = 0
     frame_index = 0
+    loop_count = 0
 
     last_time = get_time()
     timer = 0.0
@@ -105,21 +108,25 @@ def main():
         timer += now - last_time
         last_time = now
 
+        name = order[anim_index]
+        image, frames = animations[name]
+
         if timer >= FRAME_DELAY:
             timer -= FRAME_DELAY
             frame_index += 1
 
-            image, frames = animations[order[anim_index]]
-
             if frame_index >= len(frames):
-                frame_index = 0
+                loop_count += 1
+
+                if loop_count >= REPEAT_COUNT:
+                    frame_index = len(frames) - 1
+                else:
+                    frame_index = 0
 
         clear_canvas()
-
-        image, frames = animations[order[anim_index]]
         draw_frame(image, frames[frame_index])
-
         update_canvas()
+
         delay(0.01)
 
     close_canvas()
