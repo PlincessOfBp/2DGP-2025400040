@@ -54,7 +54,17 @@ def build_frames(image, layout, count):
     return frames
 
 def load_animations():
-    pass
+    animations = {}
+    order = []
+
+    for name, filename, layout, count in SHEETS:
+        image = load_image(find_sheet(filename))
+        frames = build_frames(image, layout, count)
+
+        animations[name] = (image, frames)
+        order.append(name)
+
+    return animations, order
 
 def draw_frame(image, frame):
     pass
