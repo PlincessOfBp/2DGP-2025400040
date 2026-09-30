@@ -73,12 +73,14 @@ def draw_frame(image, frame):
     dh = h * SCALE
 
     cx = CANVAS_W // 2
-    cy = CANVAS_H // 2
+    bottom = CANVAS_H // 2 - (CELL * SCALE) // 2
 
     image.clip_draw(
         x, y, w, h,
-        cx, cy,
-        dw, dh
+        cx,
+        bottom + dh // 2,
+        dw,
+        dh
     )
 
 def main():
