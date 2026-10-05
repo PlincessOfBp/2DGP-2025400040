@@ -21,6 +21,7 @@ SPRITE_HEIGHT = 525
 SCALE = 4
 FRAME_DURATION = 0.1
 SPRITE_PATH = Path(__file__).resolve().with_name("sonic-sprite.png")
+EXPECTED_FRAME_COUNTS = (11, 12, 6, 9, 6, 6, 6, 8, 8, 4)
 ANIMATIONS = [
     (
         (1, 39, 29, 39),
@@ -119,6 +120,7 @@ ANIMATIONS = [
         (125, 427, 23, 39),
     ),
 ]
+EXPECTED_FRAME_TOTAL = 76
 
 
 def should_close():
@@ -145,7 +147,27 @@ def draw_frame(sprite_sheet, frame):
     )
 
 
+def validate_animation_data():
+    if tuple(map(len, ANIMATIONS)) != EXPECTED_FRAME_COUNTS:
+        raise ValueError("Animation frame counts do not match the sprite sheet.")
+    if sum(map(len, ANIMATIONS)) != EXPECTED_FRAME_TOTAL:
+        raise ValueError("Animation frame total does not match the sprite sheet.")
+
+    for animation in ANIMATIONS:
+        for left, top, frame_width, frame_height in animation:
+            if (
+                left < 0
+                or top < 0
+                or frame_width <= 0
+                or frame_height <= 0
+                or left + frame_width > SPRITE_WIDTH
+                or top + frame_height > SPRITE_HEIGHT
+            ):
+                raise ValueError("Animation frame extends beyond the sprite sheet.")
+
+
 def main():
+    validate_animation_data()
     open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
