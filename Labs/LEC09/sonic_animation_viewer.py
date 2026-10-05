@@ -17,6 +17,7 @@ from pico2d import (
 
 CANVAS_WIDTH = 1200
 CANVAS_HEIGHT = 600
+CANVAS_CENTER = (CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
 SPRITE_WIDTH = 399
 SPRITE_HEIGHT = 525
 SCALE = 4
@@ -144,8 +145,8 @@ def draw_frame(sprite_sheet, frame):
         source_bottom,
         frame_width,
         frame_height,
-        CANVAS_WIDTH // 2,
-        CANVAS_HEIGHT // 2,
+        CANVAS_CENTER[0],
+        CANVAS_CENTER[1],
         frame_width * SCALE,
         frame_height * SCALE,
     )
