@@ -7,6 +7,7 @@ from pico2d import (
     SDLK_ESCAPE,
     clear_canvas,
     close_canvas,
+    delay,
     get_events,
     load_image,
     open_canvas,
@@ -20,6 +21,7 @@ SPRITE_WIDTH = 399
 SPRITE_HEIGHT = 525
 SCALE = 4
 FRAME_DURATION = 0.1
+RENDER_INTERVAL = 1 / 60
 ANIMATION_REPEAT_COUNT = 5
 ANIMATION_PAUSE_DURATION = 1.0
 SPRITE_PATH = Path(__file__).resolve().with_name("sonic-sprite.png")
@@ -222,6 +224,7 @@ def main():
             clear_canvas()
             draw_frame(sprite_sheet, playback.frame)
             update_canvas()
+            delay(RENDER_INTERVAL)
     finally:
         close_canvas()
 
