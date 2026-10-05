@@ -171,6 +171,12 @@ def validate_animation_data():
                 raise ValueError("Animation frame extends beyond the sprite sheet.")
 
 
+def load_sprite_sheet():
+    if not SPRITE_PATH.is_file():
+        raise FileNotFoundError(f"스프라이트 이미지를 찾을 수 없습니다: {SPRITE_PATH}")
+    return load_image(str(SPRITE_PATH))
+
+
 class PlaybackState:
     def __init__(self, start_time):
         self.animation_index = 0
@@ -214,7 +220,7 @@ def main():
     validate_animation_data()
     open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     try:
-        sprite_sheet = load_image(str(SPRITE_PATH))
+        sprite_sheet = load_sprite_sheet()
         playback = PlaybackState(perf_counter())
 
         while True:
