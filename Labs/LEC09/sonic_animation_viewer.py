@@ -126,6 +126,13 @@ ANIMATIONS = (
     ),
 )
 EXPECTED_FRAME_TOTAL = 76
+MOVING_ANIMATION_INDICES = frozenset((1, 2, 4, 5, 6, 7, 8, 9))
+JUMP_ANIMATION_INDEX = 7
+MOVEMENT_SPEED = 180
+JUMP_HEIGHT = 120
+MOVEMENT_MARGIN = max(frame[2] for animation in ANIMATIONS for frame in animation) * SCALE / 2
+MINIMUM_X = MOVEMENT_MARGIN
+MAXIMUM_X = CANVAS_WIDTH - MOVEMENT_MARGIN
 
 
 def should_close():
@@ -137,18 +144,32 @@ def should_close():
     return False
 
 
-def draw_frame(sprite_sheet, frame):
+def draw_frame(sprite_sheet, frame, position_x, position_y, facing_left):
     left, source_bottom, frame_width, frame_height = get_source_rectangle(frame)
-    sprite_sheet.clip_draw(
-        left,
-        source_bottom,
-        frame_width,
-        frame_height,
-        CANVAS_CENTER[0],
-        CANVAS_CENTER[1],
+    destination = (
+        position_x,
+        position_y,
         frame_width * SCALE,
         frame_height * SCALE,
     )
+    if facing_left:
+        sprite_sheet.clip_composite_draw(
+            left,
+            source_bottom,
+            frame_width,
+            frame_height,
+            0,
+            "h",
+            *destination,
+        )
+    else:
+        sprite_sheet.clip_draw(
+            left,
+            source_bottom,
+            frame_width,
+            frame_height,
+            *destination,
+        )
 
 
 def validate_animation_data():
@@ -189,26 +210,53 @@ class PlaybackState:
         self.completed_repeats = 0
         self.frame_started_at = start_time
         self.pause_started_at = None
+        self.last_updated_at = start_time
+        self.position_x = CANVAS_CENTER[0]
+        self.position_y = CANVAS_CENTER[1]
+        self.direction = 1
 
     @property
     def frame(self):
         return ANIMATIONS[self.animation_index][self.frame_index]
 
     def update(self, current_time):
+        movement_started_at = self.last_updated_at
+        if self.pause_started_at is not None:
+            movement_started_at = max(
+                movement_started_at,
+                self.pause_started_at + ANIMATION_PAUSE_DURATION,
+            )
+        elapsed = max(0, current_time - movement_started_at)
+
+        if self.animation_index in MOVING_ANIMATION_INDICES:
+            self.position_x += self.direction * MOVEMENT_SPEED * elapsed
+            while self.position_x < MINIMUM_X or self.position_x > MAXIMUM_X:
+                if self.position_x > MAXIMUM_X:
+                    self.position_x = 2 * MAXIMUM_X - self.position_x
+                    self.direction = -1
+                elif self.position_x < MINIMUM_X:
+                    self.position_x = 2 * MINIMUM_X - self.position_x
+                    self.direction = 1
+        else:
+            self.position_x = CANVAS_CENTER[0]
+        self.last_updated_at = current_time
+
         while True:
             if self.pause_started_at is not None:
                 pause_ends_at = self.pause_started_at + ANIMATION_PAUSE_DURATION
                 if current_time < pause_ends_at:
-                    return
+                    break
                 self.animation_index = (self.animation_index + 1) % len(ANIMATIONS)
                 self.frame_index = 0
                 self.completed_repeats = 0
                 self.frame_started_at = pause_ends_at
                 self.pause_started_at = None
+                if self.animation_index not in MOVING_ANIMATION_INDICES:
+                    self.position_x = CANVAS_CENTER[0]
 
             frame_ends_at = self.frame_started_at + FRAME_DURATION
             if current_time < frame_ends_at:
-                return
+                break
             self.frame_started_at = frame_ends_at
             self.frame_index += 1
 
@@ -217,8 +265,25 @@ class PlaybackState:
                 if self.completed_repeats == ANIMATION_REPEAT_COUNT:
                     self.frame_index -= 1
                     self.pause_started_at = self.frame_started_at
-                    return
+                    break
                 self.frame_index = 0
+
+        if self.animation_index not in MOVING_ANIMATION_INDICES:
+            self.position_x = CANVAS_CENTER[0]
+        self._update_vertical_position(current_time)
+
+    def _update_vertical_position(self, current_time):
+        if self.animation_index != JUMP_ANIMATION_INDEX or self.pause_started_at is not None:
+            self.position_y = CANVAS_CENTER[1]
+            return
+
+        animation_length = len(ANIMATIONS[self.animation_index])
+        frame_progress = min(
+            max((current_time - self.frame_started_at) / FRAME_DURATION, 0),
+            1,
+        )
+        jump_progress = (self.frame_index + frame_progress) / animation_length
+        self.position_y = CANVAS_CENTER[1] + 4 * JUMP_HEIGHT * jump_progress * (1 - jump_progress)
 
 
 def main():
@@ -234,7 +299,13 @@ def main():
 
             playback.update(perf_counter())
             clear_canvas()
-            draw_frame(sprite_sheet, playback.frame)
+            draw_frame(
+                sprite_sheet,
+                playback.frame,
+                playback.position_x,
+                playback.position_y,
+                playback.direction < 0 and playback.animation_index in MOVING_ANIMATION_INDICES,
+            )
             update_canvas()
             delay(RENDER_INTERVAL)
     finally:
