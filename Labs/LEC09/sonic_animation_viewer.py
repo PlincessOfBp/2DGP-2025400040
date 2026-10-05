@@ -27,7 +27,7 @@ ANIMATION_REPEAT_COUNT = 5
 ANIMATION_PAUSE_DURATION = 1.0
 SPRITE_PATH = Path(__file__).resolve().with_name("sonic-sprite.png")
 EXPECTED_FRAME_COUNTS = (11, 12, 6, 9, 6, 6, 6, 8, 8, 4)
-ANIMATIONS = [
+ANIMATIONS = (
     (
         (1, 39, 29, 39),
         (31, 40, 26, 38),
@@ -124,7 +124,7 @@ ANIMATIONS = [
         (96, 427, 23, 39),
         (125, 427, 23, 39),
     ),
-]
+)
 EXPECTED_FRAME_TOTAL = 76
 
 
