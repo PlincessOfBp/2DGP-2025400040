@@ -20,6 +20,8 @@ SPRITE_WIDTH = 399
 SPRITE_HEIGHT = 525
 SCALE = 4
 FRAME_DURATION = 0.1
+ANIMATION_REPEAT_COUNT = 5
+ANIMATION_PAUSE_DURATION = 1.0
 SPRITE_PATH = Path(__file__).resolve().with_name("sonic-sprite.png")
 EXPECTED_FRAME_COUNTS = (11, 12, 6, 9, 6, 6, 6, 8, 8, 4)
 ANIMATIONS = [
@@ -166,29 +168,59 @@ def validate_animation_data():
                 raise ValueError("Animation frame extends beyond the sprite sheet.")
 
 
+class PlaybackState:
+    def __init__(self, start_time):
+        self.animation_index = 0
+        self.frame_index = 0
+        self.completed_repeats = 0
+        self.frame_started_at = start_time
+        self.pause_started_at = None
+
+    @property
+    def frame(self):
+        return ANIMATIONS[self.animation_index][self.frame_index]
+
+    def update(self, current_time):
+        while True:
+            if self.pause_started_at is not None:
+                pause_ends_at = self.pause_started_at + ANIMATION_PAUSE_DURATION
+                if current_time < pause_ends_at:
+                    return
+                self.animation_index = (self.animation_index + 1) % len(ANIMATIONS)
+                self.frame_index = 0
+                self.completed_repeats = 0
+                self.frame_started_at = pause_ends_at
+                self.pause_started_at = None
+
+            frame_ends_at = self.frame_started_at + FRAME_DURATION
+            if current_time < frame_ends_at:
+                return
+            self.frame_started_at = frame_ends_at
+            self.frame_index += 1
+
+            if self.frame_index == len(ANIMATIONS[self.animation_index]):
+                self.completed_repeats += 1
+                if self.completed_repeats == ANIMATION_REPEAT_COUNT:
+                    self.frame_index -= 1
+                    self.pause_started_at = self.frame_started_at
+                    return
+                self.frame_index = 0
+
+
 def main():
     validate_animation_data()
     open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
-        animation_index = 0
-        frame_index = 0
-        previous_frame_time = perf_counter()
+        playback = PlaybackState(perf_counter())
 
         while True:
             if should_close():
                 break
 
-            current_time = perf_counter()
-            if current_time - previous_frame_time >= FRAME_DURATION:
-                frame_index += 1
-                if frame_index == len(ANIMATIONS[animation_index]):
-                    animation_index = (animation_index + 1) % len(ANIMATIONS)
-                    frame_index = 0
-                previous_frame_time = current_time
-
+            playback.update(perf_counter())
             clear_canvas()
-            draw_frame(sprite_sheet, ANIMATIONS[animation_index][frame_index])
+            draw_frame(sprite_sheet, playback.frame)
             update_canvas()
     finally:
         close_canvas()
