@@ -35,6 +35,20 @@ ANIMATIONS = [
         (270, 45, 24, 32),
         (302, 51, 29, 26),
     ),
+    (
+        (8, 80, 26, 37),
+        (37, 80, 27, 37),
+        (65, 80, 31, 38),
+        (97, 80, 37, 37),
+        (135, 80, 32, 35),
+        (170, 79, 32, 38),
+        (206, 79, 26, 38),
+        (238, 80, 24, 37),
+        (263, 80, 30, 37),
+        (295, 80, 36, 37),
+        (334, 80, 32, 36),
+        (370, 79, 29, 38),
+    ),
 ]
 
 
@@ -66,6 +80,7 @@ def main():
     open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     try:
         sprite_sheet = load_image(str(SPRITE_PATH))
+        animation_index = 0
         frame_index = 0
         previous_frame_time = perf_counter()
 
@@ -75,11 +90,14 @@ def main():
 
             current_time = perf_counter()
             if current_time - previous_frame_time >= FRAME_DURATION:
-                frame_index = (frame_index + 1) % len(ANIMATIONS[0])
+                frame_index += 1
+                if frame_index == len(ANIMATIONS[animation_index]):
+                    animation_index = (animation_index + 1) % len(ANIMATIONS)
+                    frame_index = 0
                 previous_frame_time = current_time
 
             clear_canvas()
-            draw_frame(sprite_sheet, ANIMATIONS[0][frame_index])
+            draw_frame(sprite_sheet, ANIMATIONS[animation_index][frame_index])
             update_canvas()
     finally:
         close_canvas()
