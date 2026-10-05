@@ -138,8 +138,7 @@ def should_close():
 
 
 def draw_frame(sprite_sheet, frame):
-    left, top, frame_width, frame_height = frame
-    source_bottom = SPRITE_HEIGHT - top - frame_height
+    left, source_bottom, frame_width, frame_height = get_source_rectangle(frame)
     sprite_sheet.clip_draw(
         left,
         source_bottom,
@@ -175,6 +174,12 @@ def load_sprite_sheet():
     if not SPRITE_PATH.is_file():
         raise FileNotFoundError(f"스프라이트 이미지를 찾을 수 없습니다: {SPRITE_PATH}")
     return load_image(str(SPRITE_PATH))
+
+
+def get_source_rectangle(frame):
+    left, top, frame_width, frame_height = frame
+    bottom = SPRITE_HEIGHT - top - frame_height
+    return left, bottom, frame_width, frame_height
 
 
 class PlaybackState:
