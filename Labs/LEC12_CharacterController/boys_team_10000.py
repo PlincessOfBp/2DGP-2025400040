@@ -6,13 +6,17 @@ from boy import Boy # grass : 모듈 이름, Grass : 클래스 이름
 # Game object class here
 
 def handle_events():
-    global running
+    global running, world
     event_list = get_events()
     for event in event_list:
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        elif event.type in (SDL_KEYDOWN, SDL_KEYUP):
+            for o in world:
+                if isinstance(o, Boy):
+                    o.handle_event(event)
 
 
 def reset_world():
