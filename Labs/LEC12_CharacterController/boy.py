@@ -56,6 +56,9 @@ class Boy:
             self.start_run()
         elif event.type == SDL_KEYUP and self.state == 'RUN' and event.key in (SDLK_LEFT, SDLK_RIGHT):
             self.stop_run()
+        elif event.type == SDL_KEYDOWN and self.state in ('IDLE', 'RUN') and event.key == SDLK_SPACE:
+            direction = '오른쪽' if self.direction == 1 else '왼쪽'
+            print(f'소년이 {direction}으로 축구공을 발사했습니다!')
         elif self.state == 'SLEEP' and event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             self.wake_up()
 

@@ -5,10 +5,13 @@ from sdl2 import (SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT,
                   SDLK_SPACE)
 from transitions import Machine
 
+import game_world
+from ball import Ball
+
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 400, 90
+        self.x, self.y = 400, 30
         self.frame = 0
         self.image = load_image('animation_sheet.png')
         self.idle_started_at = get_time()
@@ -48,6 +51,13 @@ class Boy:
                 event.key == SDLK_SPACE and
                 self.state == 'SLEEP'):
             self.wake_up()
+            return
+
+        if (event.type == SDL_KEYDOWN and
+                event.key == SDLK_SPACE and
+                self.state in ('IDLE', 'RUN')):
+            ball_x = self.x + self.face_dir * 45
+            game_world.add_object(Ball(ball_x, self.y, self.face_dir))
             return
 
         if (event.type not in (SDL_KEYDOWN, SDL_KEYUP) or

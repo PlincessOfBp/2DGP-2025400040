@@ -1,28 +1,32 @@
-world = [[], []] # layers for game objects
+# 게임 월드 리스트 초기화
 
-def add_object(o, depth):
+# world = [] # 객체들의 리스트, 빈 리스트
+
+world = [[], []] # 객체들의 리스트, 리스트가 들어간 리스트.
+
+# 객체를 게임월드에 추가하는 함수
+def add_object(o, depth=0):
     world[depth].append(o)
 
-def add_objects(ol, depth):
+def add_objects(ol, depth=0):
     world[depth] += ol
 
 def remove_object(o):
-    for layer in world:
-        if o in layer:
+    for layer in world: # 모든 레이어를 순회하면서 객체를 제거
+        if o in layer: # 객체가 해당 레이어에 존재하면 제거
             layer.remove(o)
-            return
+            return # 제거 후 함수 종료
 
     raise Exception("Object not found")
 
 
 def update():
     for layer in world:
-        for o in layer:
+        for o in layer[:]:
             o.update()
 
 def render():
     for layer in world:
         for o in layer:
             o.draw()
-
 
