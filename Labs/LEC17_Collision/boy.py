@@ -97,6 +97,10 @@ class Run:
 
 
 class Boy:
+
+    def get_bb(self):
+        return self.x - 25, self.y - 50, self.x + 25, self.y + 50
+
     def __init__(self):
         self.font = load_font('ENCR10B.TTF', 16)
         self.x, self.y = 400, 90
@@ -144,6 +148,8 @@ class Boy:
         ball = Ball(self.x + self.face_dir * 40, self.y + 60, self.face_dir,
                     1 if self.item == 'Ball' else 2)
         game_world.add_oject(ball)
+        game_world.add_collision_pair('grass:ball', None, ball)
+        game_world.add_collision_pair('boy:ball', None, ball)   
 
     def pause(self):
         self.pressed_keys.clear()
@@ -182,3 +188,8 @@ class Boy:
     def draw(self):
         self.states[self.state].draw(self)
         self.font.draw(self.x - 10, self.y + 50, f'{self.ball_count:02d}', (255, 255, 0))
+        draw_rectangle(*self.get_bb())
+
+    def handle_collision(self, group, other):
+        if group == 'boy:ball':
+            self.ball_count += 1

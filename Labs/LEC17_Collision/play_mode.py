@@ -4,7 +4,6 @@ import game_framework
 from boy import Boy
 from grass import Grass
 from ball import Ball
-from zombie import Zombie
 import random
 
 boy = None
@@ -32,6 +31,15 @@ def init():
 
     grass = Grass()
     game_world.add_oject(grass, 0)
+    game_world.add_collision_pair('grass:ball', grass, None)
+
+    global balls
+    balls = [Ball(random.randint(100, 1600-100), 60, 0) for _ in range(30)]
+    game_world.add_objects(balls, 1)
+
+    game_world.add_collision_pair('boy:ball', boy, None)
+    for ball in balls:
+        game_world.add_collision_pair('boy:ball', None, ball)
 
 
 def pause():
@@ -50,17 +58,11 @@ def finish():
 
 def update():
     game_world.update()
+    game_world.handle_collisions()
 
 def render():
     clear_canvas()
     game_world.render()
     update_canvas()
-
-
-
-
-
-
-
 
 
