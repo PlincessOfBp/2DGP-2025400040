@@ -4,6 +4,7 @@ import game_framework
 from boy import Boy
 from grass import Grass
 from ball import Ball
+from zombie import Zombie
 import random
 
 boy = None
@@ -40,6 +41,9 @@ def init():
     game_world.add_collision_pair('boy:ball', boy, None)
     for ball in balls:
         game_world.add_collision_pair('boy:ball', None, ball)
+
+    zombies = [Zombie() for _ in range(4)]
+    game_world.add_objects(zombies, 1)
 
 
 def pause():
