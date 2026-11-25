@@ -5,6 +5,7 @@ import common
 from ground import Ground
 from boy import Boy
 from ball import Ball
+from blackboard_display import BlackboardDisplay
 from zombie import Zombie
 
 
@@ -34,6 +35,9 @@ def init():
 
     zombie = Zombie(300, 300)
     game_world.add_oject(zombie)
+
+    blackboard = BlackboardDisplay()
+    game_world.add_oject(blackboard, 2)
 
     game_world.add_collision_pair('boy:ball', common.boy, None)
     game_world.add_collision_pair('zombie:ball', zombie, None)
